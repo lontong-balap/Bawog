@@ -268,7 +268,8 @@ write_size:
 	mutex_unlock(&sbi->s_lock);
 }
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0)
 int exfat_getattr(struct mnt_idmap *idmap, const struct path *path,
 		  struct kstat *stat, unsigned int request_mask,
 		  unsigned int query_flags)
@@ -293,7 +294,6 @@ int exfat_getattr(struct vfsmount *mnt, struct dentry *dentry,
 
 	generic_fillattr(inode, stat);
 	exfat_truncate_atime(&stat->atime);
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
 	stat->result_mask |= STATX_BTIME;
 	stat->btime.tv_sec = ei->i_crtime.tv_sec;
 	stat->btime.tv_nsec = ei->i_crtime.tv_nsec;
@@ -473,3 +473,4 @@ const struct inode_operations exfat_file_inode_operations = {
 	.listxattr      = exfat_listxattr,
 #endif
 };
+
